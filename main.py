@@ -16,15 +16,26 @@ def automate_function(
     automate_context: AutomationContext
 ) -> None:
     
-    account = automate_context.speckle_client.account
-    AccountStorage.SaveObject(account.id, JsonConvert.SerializeObject(account));
+    client = automate_context.speckle_client
+    PROJECT_ID = automate_context.automation_run_data.project_id
+    VERSION_ID = automate_context.automation_run_data.version_id
+    OBJECT_ID = client.commit.get(PROJECT_ID, VERSION_ID).referencedObject
+
+    DATA = f"""
+TOKEN = '{client.account.token}'
+SERVER_URL = '{client.account.serverInfo.url}'
+PROJECT_ID = '{PROJECT_ID}'
+OBJECT_ID = '{OBJECT_ID}'
+"""
+    
+    Path.write_text(Path("./automate_data.py"), DATA)
+
     run(    
         [
             'blender',
             '"environment.blend"',
             '--background',
             '--python speckle_import.py',
-            '-f 10',
         ],
         capture_output=True,
         text=True,

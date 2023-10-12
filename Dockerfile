@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM nytimes/blender:latest
 
 RUN pip install poetry
 
