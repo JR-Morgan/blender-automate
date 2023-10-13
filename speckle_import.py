@@ -1,5 +1,9 @@
 import bpy
 import os
+
+bpy.ops.preferences.addon_install(filepath='/blender-connector.zip')
+bpy.ops.preferences.addon_enable(module='bpy_speckle')
+
 from bpy_speckle.convert.to_native import _deep_conversion
 
 from specklepy.api import operations
