@@ -1,9 +1,3 @@
-import bpy
-import os
-
-bpy.ops.preferences.addon_install(filepath='/blender-connector.zip')
-bpy.ops.preferences.addon_enable(module='bpy_speckle')
-
 from bpy_speckle.convert.to_native import _deep_conversion
 
 from specklepy.api import operations
@@ -30,23 +24,18 @@ converted_objects = {}
 _deep_conversion(commit_object, converted_objects, True)
 
 
-
-
-all_cameras = [o for o in bpy.context.scene.objects if o.type == 'CAMERA']
+all_cameras = [o for o in bpy.context.scene.objects if o.type == "CAMERA"]
 total = len(all_cameras)
 
 print(f"Starting rendering cameras... 0/{total}")
 
-for (i, ob) in enumerate(all_cameras):
-    #Set as active render cam
+for i, ob in enumerate(all_cameras):
+    # Set as active render cam
     bpy.context.scene.camera = ob
 
-    #Render camera to output directory
+    # Render camera to output directory
     set_filename(f"{ob.name}")
-    bpy.ops.render.render(write_still = True)
+    bpy.ops.render.render(write_still=True)
     print(f"Render {i}/{total} complete! saved at {bpy.context.scene.render.filepath}")
 
 print(f"All Done!")
-
-
-
