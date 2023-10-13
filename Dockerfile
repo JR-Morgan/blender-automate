@@ -1,6 +1,8 @@
-FROM nytimes/blender:3.3.1-cpu-ubuntu18.04
+FROM linuxserver/blender
 
-RUN apt-get install python3.10 && \
+RUN apt update && \
+    apt install python3-pip && \
+    apt install unzip && \
     pip install poetry
 
 COPY . .
