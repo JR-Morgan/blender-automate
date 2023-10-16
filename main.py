@@ -3,6 +3,7 @@
 use the automation_context module to wrap your function in an Autamate context helper
 """
 
+import json
 from speckle_automate import (
     AutomationContext,
     execute_automate_function,
@@ -21,30 +22,36 @@ def automate_function(
     VERSION_ID = automate_context.automation_run_data.version_id
     OBJECT_ID = client.commit.get(PROJECT_ID, VERSION_ID).referencedObject
 
-    DATA = f"""
-TOKEN = '{client.account.token}'
-SERVER_URL = '{client.account.serverInfo.url}'
-PROJECT_ID = '{PROJECT_ID}'
-OBJECT_ID = '{OBJECT_ID}'
-"""
-    
-    Path.write_text(Path("./automate_data.py"), DATA)
+    data = {
+        "TOKEN": client.account.token,
+        "SERVER_URL": client.account.serverInfo.url,
+        "PROJECT_ID": PROJECT_ID,
+        "OBJECT_ID": OBJECT_ID
+    }
 
-    run(    
+    Path("./automate_data.json").write_text(json.dumps(data))
+
+    process = run(    
         [
             'blender',
-            '"environment.blend"',
+            'environment.blend',
             '--background',
-            '--python speckle_import.py',
+            '--python',
+            'speckle_import.py'
         ],
         capture_output=True,
         text=True,
     )
+    if (returncode := process.returncode) != 0:
+        automate_context.mark_run_failed(f"The blender process exited with code {returncode}\n{process.stdout}")
+    else:
+        print(process.stdout)
+        print(process.stderr)
 
-    for file_path in Path("./screenshots").glob("**/*.png") :
-        automate_context.store_file_result(file_path)
+        for file_path in Path("./Screenshots").glob("**/*.png") :
+            automate_context.store_file_result(file_path)
 
-    automate_context.mark_run_success("YAYAY!!! we did it!")
+        automate_context.mark_run_success("YAYAY!!! we did it!")
 
 
 

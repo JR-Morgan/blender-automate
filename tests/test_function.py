@@ -6,6 +6,7 @@ import string
 import pytest
 from gql import gql
 from speckle_automate import (
+    AutomationContext,
     AutomationRunData,
     AutomationStatus,
     run_function,
@@ -15,8 +16,7 @@ from specklepy.api.client import SpeckleClient
 from specklepy.objects.base import Base
 from specklepy.transports.server import ServerTransport
 
-from main import FunctionInputs, automate_function
-
+from main import automate_function
 
 def crypto_random_string(length: int) -> str:
     """Generate a semi crypto random string of a given length."""
@@ -78,8 +78,8 @@ def speckle_token() -> str:
 
 @pytest.fixture()
 def speckle_server_url() -> str:
-    """Provide a speckle server url for the test suite, default to localhost."""
-    return os.getenv("SPECKLE_SERVER_URL", "http://127.0.0.1:3000")
+    """Provide a speckle server url for the test suite, default to latests."""
+    return os.getenv("SPECKLE_SERVER_URL", "https://latest.speckle.systems")
 
 
 @pytest.fixture()
@@ -105,29 +105,31 @@ def automation_run_data(
     test_object: Base, test_client: SpeckleClient, speckle_server_url: str
 ) -> AutomationRunData:
     """Set up an automation context for testing."""
-    project_id = test_client.stream.create("Automate function e2e test")
+    project_id = "704984e22d" # test_client.stream.create("Automate function e2e test")
     branch_name = "main"
 
     model = test_client.branch.get(project_id, branch_name, commits_limit=1)
     model_id: str = model.id
 
-    root_obj_id = operations.send(
-        test_object, [ServerTransport(project_id, test_client)]
-    )
-    version_id = test_client.commit.create(project_id, root_obj_id)
+    # root_obj_id = operations.send(
+    #     test_object, [ServerTransport(project_id, test_client)]
+    # )
+    version_id = "704984e22d" #test_client.commit.create(project_id, root_obj_id)
+    if(isinstance(version_id, Exception)):
+        raise version_id
+    
+    automation_name = "myFunctionName" #crypto_random_string(10)
+    automation_id = "myFunctionId" #crypto_random_string(10)
+    automation_revision_id = "myFunctionVer" # crypto_random_string(10)
 
-    automation_name = crypto_random_string(10)
-    automation_id = crypto_random_string(10)
-    automation_revision_id = crypto_random_string(10)
-
-    register_new_automation(
-        project_id,
-        model_id,
-        test_client,
-        automation_id,
-        automation_name,
-        automation_revision_id,
-    )
+    # register_new_automation(
+    #     project_id,
+    #     model_id,
+    #     test_client,
+    #     automation_id,
+    #     automation_name,
+    #     automation_revision_id,
+    # )
 
     automation_run_id = crypto_random_string(10)
     function_id = crypto_random_string(10)
@@ -142,17 +144,17 @@ def automation_run_data(
         automation_revision_id=automation_revision_id,
         automation_run_id=automation_run_id,
         function_id=function_id,
-        function_revision=function_revision,
+        function_name="",
+        function_release= function_revision
     )
 
 
 def test_function_run(automation_run_data: AutomationRunData, speckle_token: str):
     """Run an integration test for the automate function."""
+    context = AutomationContext.initialize(automation_run_data, speckle_token)
     automate_sdk = run_function(
+        context,
         automate_function,
-        automation_run_data,
-        speckle_token,
-        FunctionInputs(forbidden_speckle_type="Base"),
     )
-
-    assert automate_sdk.run_status == AutomationStatus.FAILED
+    assert len(context._automation_result.blobs) > 0
+    assert automate_sdk.run_status == AutomationStatus.SUCCEEDED
