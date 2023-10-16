@@ -311,3 +311,9 @@ pyrightconfig.json
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,pycharm
+
+
+#Others ones specific to this running the project locally
+Screenshots/
+automate_data.json
+*.blend[1-9]

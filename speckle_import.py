@@ -49,7 +49,7 @@ for mat in bpy.data.materials:
 traversal_func = get_default_traversal_func(can_convert_to_native)
 rooms = [x.current for x in traversal_func.traverse(root_object) if x.current.speckle_type == "Objects.BuiltElements.Room"]
 
-light = bpy.data.lights.new("myLight", "PointLight")
+light = bpy.data.lights.new("myLight", 'POINT')
 
 for room in rooms:
     (converted, _) = display_value_to_native(room, f"FakeRoom{room.id}", get_scale_factor(room))
