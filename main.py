@@ -30,7 +30,9 @@ def automate_function(
     }
 
     Path("./automate_data.json").write_text(json.dumps(data))
-
+    
+    print("Starting blender")
+       
     process = run(    
         [
             'blender',
@@ -42,16 +44,17 @@ def automate_function(
         capture_output=True,
         text=True,
     )
+    print(process.stdout)
+    print(process.stderr)
+    
     if (returncode := process.returncode) != 0:
-        automate_context.mark_run_failed(f"The blender process exited with code {returncode}\n{process.stdout}")
+        automate_context.mark_run_failed(f"The blender process exited with error code {returncode}\n{process.stdout}")
     else:
-        print(process.stdout)
-        print(process.stderr)
-
-        for file_path in Path("./Screenshots").glob("**/*.png") :
+        files = list(Path("./Screenshots").glob("**/*.png"))
+        for file_path in files:
             automate_context.store_file_result(file_path)
 
-        automate_context.mark_run_success("YAYAY!!! we did it!")
+        automate_context.mark_run_success(f"YAYAY!!! we did it! - {len(files)} exported")
 
 
 

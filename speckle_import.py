@@ -3,7 +3,7 @@ import bpy
 import json
 from pathlib import Path
 
-from mathutils import Vector
+from mathutils import Color, Vector
 from bpy_speckle.convert.to_native import _deep_conversion, can_convert_to_native, convert_to_native, display_value_to_native, get_scale_factor
 
 from specklepy.api import operations
@@ -41,22 +41,29 @@ root_object = operations.receive(OBJECT_ID, remote_transport)
 converted_objects = {}
 _deep_conversion(root_object, converted_objects, True)
 
-#Make all materials blank
+#Make all materials white
 for mat in bpy.data.materials:
-    mat.diffuse_color = (1.0, 1.0, 1.0, 1.0)
+    COLOR = (1.0, 1.0, 1.0, 1.0)
+    mat.diffuse_color = COLOR
+    inputs = mat.node_tree.nodes["Principled BSDF"].inputs
+    inputs["Base Color"].default_value = COLOR
+
 
 # Convert all rooms as lights
 traversal_func = get_default_traversal_func(can_convert_to_native)
 rooms = [x.current for x in traversal_func.traverse(root_object) if x.current.speckle_type == "Objects.BuiltElements.Room"]
 
 light = bpy.data.lights.new("myLight", 'POINT')
+light.color = Color((1, 0.34, 0.1))
+light.energy = 100 #watts
 
+print(f"Found {len(rooms)} rooms")
 for room in rooms:
     (converted, _) = display_value_to_native(room, f"FakeRoom{room.id}", get_scale_factor(room))
     
     #calculate bounds
-    minimum = Vector((-math.inf, -math.inf, -math.inf))
-    maximum = Vector((math.inf, math.inf, math.inf))
+    minimum = Vector((+math.inf, +math.inf, +math.inf))
+    maximum = Vector((-math.inf, -math.inf, -math.inf))
 
     for vert in converted.vertices:
         minimum.x = min(minimum.x, vert.co.x)
@@ -66,9 +73,12 @@ for room in rooms:
         maximum.y = max(maximum.y, vert.co.y)
         maximum.z = max(maximum.z, vert.co.z)
 
-    bpy.data.objects.new(f"FakeLight{room.id}", light)
+    light_pos = minimum.lerp(maximum, 0.5)
 
+    light_object = bpy.data.objects.new(f"FakeLight{room.id}", light)
+    light_object.matrix_local.translation = light_pos
 
+    bpy.context.collection.objects.link(light_object)
 
 
 all_cameras = [o for o in bpy.context.scene.objects if o.type == "CAMERA"]
@@ -83,6 +93,6 @@ for i, ob in enumerate(all_cameras):
     # Render camera to output directory
     set_filename(f"{ob.name}")
     bpy.ops.render.render(write_still=True)
-    print(f"Render {i}/{total} complete! saved at {bpy.context.scene.render.filepath}")
+    print(f"Render {i + 1}/{total} complete! saved at {bpy.context.scene.render.filepath}")
 
 print(f"All Done!")
