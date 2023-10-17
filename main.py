@@ -12,6 +12,7 @@ from pathlib import Path
 
 from subprocess import run
 
+SCREENSHOTS_PATH = "./Screenshots"
 
 def automate_function(
     automate_context: AutomationContext
@@ -30,6 +31,7 @@ def automate_function(
     }
 
     Path("./automate_data.json").write_text(json.dumps(data))
+    Path(SCREENSHOTS_PATH).mkdir(exist_ok=True)
     
     print("Starting blender")
        
@@ -50,7 +52,7 @@ def automate_function(
     if (returncode := process.returncode) != 0:
         automate_context.mark_run_failed(f"The blender process exited with error code {returncode}\n{process.stdout}")
     else:
-        files = list(Path("./Screenshots").glob("**/*.png"))
+        files = list(Path(SCREENSHOTS_PATH).glob("**/*.png"))
         for file_path in files:
             automate_context.store_file_result(file_path)
 
