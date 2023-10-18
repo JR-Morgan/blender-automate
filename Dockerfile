@@ -21,7 +21,9 @@ RUN \
   curl \
   python3-pip \
   ocl-icd-libopencl1 \
-  xz-utils && \
+  xz-utils
+  
+RUN \
   ln -s libOpenCL.so.1 /usr/lib/x86_64-linux-gnu/libOpenCL.so && \
   echo "**** install blender ****" && \
   mkdir /blender && \
