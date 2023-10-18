@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "speckle-automate-py"
+name = "blender-automate"
 version = "0.1.0"
-description = "Example function for Speckle Automate using specklepy"
-authors = ["Gergő Jedlicska <gergo@jedlicska.com>"]
+description = "Run Blender renders in Speckle automate to output images"
+authors = ["Jedd Morgan <jedd@speckle.systems>", "Gergő Jedlicska <gergo@jedlicska.com>"]
 readme = "README.md"
-packages = [{include = "src/speckle_automate_py"}]
+packages = [{include = ""}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
