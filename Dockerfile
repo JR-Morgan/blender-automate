@@ -56,5 +56,5 @@ RUN pip3 install poetry
 COPY . .
 
 RUN poetry export -f requirements.txt --output requirements.txt && pip install -r requirements.txt && \
-  wget -O blender-connector.zip https://releases.speckle.dev/installers/blender/bpy_speckle-2.17.0-alpha2.zip && \
+  wget -O blender-connector.zip https://releases.speckle.dev/installers/blender/bpy_speckle-2.17.0-alpha3.zip && \
   blender --background --python installation/connector.py 
