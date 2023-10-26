@@ -10,7 +10,7 @@ This function uses Blender's redering engine *Cycles* this automate function pro
 
 1. [Create](https://automate.speckle.dev/) a new Speckle Automation.
 1. Select your Speckle Project and Speckle Model.
-1. Select the existing Speckle Function named [`Rblender-automate`](https://automate.speckle.dev/functions/fe6015a999).
+1. Select the existing Speckle Function named [`blender-automate`](https://automate.speckle.dev/functions/fe6015a999).
 1. Click `Create Automation`.
 
 
