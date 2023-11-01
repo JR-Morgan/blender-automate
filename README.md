@@ -28,6 +28,7 @@ The function serializes an `automate_data.json` file with the required data to r
 1. Install the following:
     - [Python 3](https://www.python.org/downloads/)
     - [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
+    - [Blender 3.X](https://www.blender.org/)
 1. Run `poetry shell && poetry install` to install the required Python packages.
 
 ## Building and Testing
