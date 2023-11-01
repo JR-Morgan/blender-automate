@@ -3,7 +3,7 @@
 
 Speckle Automate unlocks new potentials for running Blender in the cloud.
 
-This function uses Blender's redering engine *Cycles* this automate function produces global illumation renders for each 3d view/camera in your versioned Speckle data.
+This Speckle Function uses Blender's rendering engine *Cycles* to produce global illumation renders for each 3d view/camera in your versioned Speckle data.
 
 
 ## Using this Speckle Function
