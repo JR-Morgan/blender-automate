@@ -16,8 +16,10 @@ This Speckle Function uses Blender's rendering engine *Cycles* to produce global
 
 ## Repostructure
 
-The function entry point is `main.py` following the structure of the [speckle_automate_python_example](https://github.com/specklesystems/speckle_automate_python_example)
+The function entry point is `main.py` following the structure of the [speckle_automate_python_example](https://github.com/specklesystems/speckle_automate_python_example).
+
 The function serializes an `automate_data.json` file with the required data to receive the Speckle data within a Blender subprocess running the Speckle Blender connector.
+
 `speckle_import.py` runs within the Blender context, receiving speckle data, applying material styalisation, replacing Speckle Rooms with point lights, and rendering each camera to the `./Screenshots` folder. Automate will then pickup and attach these renders as blobs to the automate result.
 
 
