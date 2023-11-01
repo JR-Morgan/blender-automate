@@ -1,6 +1,6 @@
 """This module contains the business logic of the function.
 
-use the automation_context module to wrap your function in an Autamate context helper
+use the automation_context module to wrap your function in an Automate context helper
 """
 
 import json
@@ -10,7 +10,7 @@ from speckle_automate import (
 )
 from pathlib import Path
 
-from subprocess import run, STDOUT
+from subprocess import run
 
 SCREENSHOTS_PATH = "./Screenshots"
 
@@ -45,14 +45,13 @@ def automate_function(
         ],
         capture_output=True,
         text=True,
-        stdout=STDOUT,
-        stderr=STDOUT
     )
-    print("Blender subprocess finished with exit code {returncode}")
+    print(f"Blender subprocess finished with exit code {process.returncode}")
+    print(process.stdout)
     print(process.stderr)
     
-    if (returncode := process.returncode) != 0:
-        automate_context.mark_run_failed(f"The blender process exited with error code {returncode}\n{process.stdout}")
+    if process.returncode != 0:
+        automate_context.mark_run_failed(f"The blender process exited with error code {process.returncode}\n{process.stdout}")
     else:
         files = list(Path(SCREENSHOTS_PATH).glob("**/*.png"))
         for file_path in files:
