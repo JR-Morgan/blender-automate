@@ -10,7 +10,7 @@ from speckle_automate import (
 )
 from pathlib import Path
 
-from subprocess import run
+from subprocess import run, STDOUT
 
 SCREENSHOTS_PATH = "./Screenshots"
 
@@ -45,8 +45,10 @@ def automate_function(
         ],
         capture_output=True,
         text=True,
+        stdout=STDOUT,
+        stderr=STDOUT
     )
-    print(process.stdout)
+    print("Blender subprocess finished with exit code {returncode}")
     print(process.stderr)
     
     if (returncode := process.returncode) != 0:
