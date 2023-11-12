@@ -55,7 +55,7 @@ rooms = [x.current for x in traversal_func.traverse(root_object) if x.current.sp
 
 light = bpy.data.lights.new("myLight", 'POINT')
 light.color = Color((1, 0.34, 0.1))
-light.energy = 100 #watts
+light.energy = 300 #watts
 
 print(f"Found {len(rooms)} rooms")
 for room in rooms:

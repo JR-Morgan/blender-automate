@@ -18,6 +18,7 @@ from specklepy.transports.server import ServerTransport
 
 from main import automate_function
 
+
 def crypto_random_string(length: int) -> str:
     """Generate a semi crypto random string of a given length."""
     alphabet = string.ascii_letters + string.digits
@@ -123,13 +124,13 @@ def automation_run_data(
     automation_revision_id = "myFunctionVer" # crypto_random_string(10)
 
     register_new_automation(
-         project_id,
-         model_id,
-         test_client,
-         automation_id,
-         automation_name,
-         automation_revision_id,
-     )
+        project_id,
+        model_id,
+        test_client,
+        automation_id,
+        automation_name,
+        automation_revision_id,
+    )
 
     automation_run_id = crypto_random_string(10)
     function_id = crypto_random_string(10)
@@ -144,8 +145,8 @@ def automation_run_data(
         automation_revision_id=automation_revision_id,
         automation_run_id=automation_run_id,
         function_id=function_id,
-        function_name="",
-        function_release= function_revision
+        function_name="blender-automate",
+        function_logo=""
     )
 
 

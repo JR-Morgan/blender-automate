@@ -18,6 +18,7 @@ def automate_function(
     automate_context: AutomationContext
 ) -> None:
     
+    # Get info from Automate
     client = automate_context.speckle_client
     PROJECT_ID = automate_context.automation_run_data.project_id
     VERSION_ID = automate_context.automation_run_data.version_id
