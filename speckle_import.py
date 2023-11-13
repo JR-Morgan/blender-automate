@@ -45,9 +45,11 @@ _deep_conversion(root_object, converted_objects, True)
 for mat in bpy.data.materials:
     COLOR = (1.0, 1.0, 1.0, 1.0)
     mat.diffuse_color = COLOR
+    
+    if not mat.node_tree:
+        continue
     inputs = mat.node_tree.nodes["Principled BSDF"].inputs
     inputs["Base Color"].default_value = COLOR
-
 
 # Convert all rooms as lights
 traversal_func = get_default_traversal_func(can_convert_to_native)
