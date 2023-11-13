@@ -60,6 +60,8 @@ light.energy = 300 #watts
 print(f"Found {len(rooms)} rooms")
 for room in rooms:
     (converted, _) = display_value_to_native(room, f"FakeRoom{room.id}", get_scale_factor(room))
+    if not converted:
+        continue
     
     #calculate bounds
     minimum = Vector((+math.inf, +math.inf, +math.inf))
