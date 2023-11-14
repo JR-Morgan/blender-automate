@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-
+ENV BLENDER_VERSION=3.0.1
 RUN \
   echo "**** install packages ****" && \
   apt-get update && \
