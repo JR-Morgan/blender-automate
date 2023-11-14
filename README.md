@@ -11,7 +11,7 @@ When you send a new Speckle Version to Speckle, this Function creates stylized r
 
 1. [Create](https://automate.speckle.dev/) a new Speckle Automation.
 1. Select your Speckle Project and Speckle Model.
-1. Select the existing Speckle Function named [`blender-automate`](https://automate.speckle.dev/functions/fe6015a999).
+1. Select the existing Speckle Function named [`blender-automate`](https://automate.speckle.dev/functions/c0cb8ce777).
 1. Click `Create Automation`.
 
 ## Examples
